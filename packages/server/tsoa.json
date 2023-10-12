@@ -7,7 +7,6 @@
     "specVersion": 3
   },
   "routes": {
-    "routesDir": "__generated__/",
-    "authenticationModule": "./src/auth.ts"
+    "routesDir": "__generated__/"
   }
 }

@@ -11,129 +11,64 @@ import type {
   AxiosError
 } from 'axios'
 import {
-  useQuery,
-  useMutation
+  useQuery
 } from '@tanstack/react-query'
 import type {
   UseQueryOptions,
-  UseMutationOptions,
   QueryFunction,
-  MutationFunction,
   UseQueryResult,
   QueryKey
 } from '@tanstack/react-query'
-import type {
-  UserAuthorizationRequest,
-  AuthorizationError,
-  NotFound,
-  PickIUserEmailOrPassword,
-  ITemplate,
-  ValidateError,
-  PickITemplateContent,
-  CreateTemplate201,
-  IOmittedUser,
-  CreateUser201,
-  PickIUserExcludeKeyofIUserId
-} from './schemas'
 
 
 
-/**
- * Pass credentials to verify user login.
- */
-export const login = (
-    pickIUserEmailOrPassword: PickIUserEmailOrPassword, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UserAuthorizationRequest>> => {
-    
-    return axios.post(
-      `/auth/login`,
-      pickIUserEmailOrPassword,options
-    );
-  }
-
-
-
-export const getLoginMutationOptions = <TError = AxiosError<AuthorizationError | NotFound>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: PickIUserEmailOrPassword}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: PickIUserEmailOrPassword}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: PickIUserEmailOrPassword}> = (props) => {
-          const {data} = props ?? {};
-
-          return  login(data,axiosOptions)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
-    export type LoginMutationBody = PickIUserEmailOrPassword
-    export type LoginMutationError = AxiosError<AuthorizationError | NotFound>
-
-    export const useLogin = <TError = AxiosError<AuthorizationError | NotFound>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: PickIUserEmailOrPassword}, TContext>, axios?: AxiosRequestConfig}
-) => {
-    
-      const mutationOptions = getLoginMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
 /**
  * Retrieves the details of an existing template
  */
-export const getTemplate = (
-    id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ITemplate>> => {
+export const getWeatherReport = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<unknown>> => {
     
     return axios.get(
-      `/templates/${id}`,options
+      `/tenerate`,options
     );
   }
 
 
-export const getGetTemplateQueryKey = (id: string,) => {
+export const getGetWeatherReportQueryKey = () => {
     
-    return [`/templates/${id}`] as const;
+    return [`/tenerate`] as const;
     }
   
 
     
-export const getGetTemplateQueryOptions = <TData = Awaited<ReturnType<typeof getTemplate>>, TError = AxiosError<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTemplate>>, TError, TData>, axios?: AxiosRequestConfig}
+export const getGetWeatherReportQueryOptions = <TData = Awaited<ReturnType<typeof getWeatherReport>>, TError = AxiosError<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
 ) => {
     
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetTemplateQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetWeatherReportQueryKey();
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTemplate>>> = ({ signal }) => getTemplate(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWeatherReport>>> = ({ signal }) => getWeatherReport({ signal, ...axiosOptions });
 
       
     
       
       
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTemplate>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetTemplateQueryResult = NonNullable<Awaited<ReturnType<typeof getTemplate>>>
-export type GetTemplateQueryError = AxiosError<unknown>
+export type GetWeatherReportQueryResult = NonNullable<Awaited<ReturnType<typeof getWeatherReport>>>
+export type GetWeatherReportQueryError = AxiosError<unknown>
 
-export const useGetTemplate = <TData = Awaited<ReturnType<typeof getTemplate>>, TError = AxiosError<unknown>>(
- id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTemplate>>, TError, TData>, axios?: AxiosRequestConfig}
+export const useGetWeatherReport = <TData = Awaited<ReturnType<typeof getWeatherReport>>, TError = AxiosError<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetTemplateQueryOptions(id,options)
+  const queryOptions = getGetWeatherReportQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -143,198 +78,3 @@ export const useGetTemplate = <TData = Awaited<ReturnType<typeof getTemplate>>, 
 }
 
 
-export const updateTemplate = (
-    id: string,
-    pickITemplateContent: PickITemplateContent, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    return axios.put(
-      `/templates/${id}`,
-      pickITemplateContent,options
-    );
-  }
-
-
-
-export const getUpdateTemplateMutationOptions = <TError = AxiosError<ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateTemplate>>, TError,{id: string;data: PickITemplateContent}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateTemplate>>, TError,{id: string;data: PickITemplateContent}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateTemplate>>, {id: string;data: PickITemplateContent}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  updateTemplate(id,data,axiosOptions)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type UpdateTemplateMutationResult = NonNullable<Awaited<ReturnType<typeof updateTemplate>>>
-    export type UpdateTemplateMutationBody = PickITemplateContent
-    export type UpdateTemplateMutationError = AxiosError<ValidateError>
-
-    export const useUpdateTemplate = <TError = AxiosError<ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateTemplate>>, TError,{id: string;data: PickITemplateContent}, TContext>, axios?: AxiosRequestConfig}
-) => {
-    
-      const mutationOptions = getUpdateTemplateMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
-export const createTemplate = (
-    pickITemplateContent: PickITemplateContent, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateTemplate201>> => {
-    
-    return axios.post(
-      `/templates`,
-      pickITemplateContent,options
-    );
-  }
-
-
-
-export const getCreateTemplateMutationOptions = <TError = AxiosError<void | ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createTemplate>>, TError,{data: PickITemplateContent}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createTemplate>>, TError,{data: PickITemplateContent}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createTemplate>>, {data: PickITemplateContent}> = (props) => {
-          const {data} = props ?? {};
-
-          return  createTemplate(data,axiosOptions)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type CreateTemplateMutationResult = NonNullable<Awaited<ReturnType<typeof createTemplate>>>
-    export type CreateTemplateMutationBody = PickITemplateContent
-    export type CreateTemplateMutationError = AxiosError<void | ValidateError>
-
-    export const useCreateTemplate = <TError = AxiosError<void | ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createTemplate>>, TError,{data: PickITemplateContent}, TContext>, axios?: AxiosRequestConfig}
-) => {
-    
-      const mutationOptions = getCreateTemplateMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * Retrieves the details of an existing user.
- */
-export const getUser = (
-    id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<IOmittedUser>> => {
-    
-    return axios.get(
-      `/users/${id}`,options
-    );
-  }
-
-
-export const getGetUserQueryKey = (id: string,) => {
-    
-    return [`/users/${id}`] as const;
-    }
-  
-
-    
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, axios?: AxiosRequestConfig}
-) => {
-    
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetUserQueryKey(id);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) => getUser(id, { signal, ...axiosOptions });
-
-      
-    
-      
-      
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>
-export type GetUserQueryError = AxiosError<unknown>
-
-export const useGetUser = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(
- id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, axios?: AxiosRequestConfig}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetUserQueryOptions(id,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
-export const createUser = (
-    pickIUserExcludeKeyofIUserId: PickIUserExcludeKeyofIUserId, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateUser201>> => {
-    
-    return axios.post(
-      `/users`,
-      pickIUserExcludeKeyofIUserId,options
-    );
-  }
-
-
-
-export const getCreateUserMutationOptions = <TError = AxiosError<void | ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: PickIUserExcludeKeyofIUserId}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: PickIUserExcludeKeyofIUserId}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createUser>>, {data: PickIUserExcludeKeyofIUserId}> = (props) => {
-          const {data} = props ?? {};
-
-          return  createUser(data,axiosOptions)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type CreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof createUser>>>
-    export type CreateUserMutationBody = PickIUserExcludeKeyofIUserId
-    export type CreateUserMutationError = AxiosError<void | ValidateError>
-
-    export const useCreateUser = <TError = AxiosError<void | ValidateError>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: PickIUserExcludeKeyofIUserId}, TContext>, axios?: AxiosRequestConfig}
-) => {
-    
-      const mutationOptions = getCreateUserMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    

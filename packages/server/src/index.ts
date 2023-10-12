@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-console.log(process.env.NODE_ENVIRONMENT);
 if (process.env.NODE_ENVIRONMENT === "development") {
   app.get("/swagger/openapi.json", async (_req: Request, res: Response) => {
     return res.json(await import("../build/swagger.json"));
