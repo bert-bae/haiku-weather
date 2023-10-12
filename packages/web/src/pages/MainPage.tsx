@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Box, Skeleton, Typography, useMediaQuery } from "@mui/material";
 import { useGetWeatherReport } from "api/__generated__/server";
 import Page from "layout/Page";
+import { useEffect, useState } from "react";
 
 const StyledImg = styled.img`
   height: ${({ theme }) => theme.spacing(60)};
@@ -12,15 +13,31 @@ const StyledImg = styled.img`
 `;
 
 const MainPage = () => {
+  const [location, setLocation] = useState<{ lat: number; lon: number }>(null);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { data, isLoading } = useGetWeatherReport(
+  const { data, refetch, isLoading } = useGetWeatherReport(
     {
-      lat: "49.282730",
-      lon: "-123.120735",
+      lat: location?.lat ? String(location.lat) : "",
+      lon: location?.lon ? String(location.lon) : "",
     },
-    { query: { cacheTime: 120000, queryKey: ["GetWeather"] } }
+    { query: { cacheTime: 120000, enabled: false, queryKey: [location] } }
   );
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setLocation({
+        lat: pos.coords.latitude,
+        lon: pos.coords.longitude,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      refetch();
+    }
+  }, [location]);
 
   return (
     <Page>
