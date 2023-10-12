@@ -3,7 +3,7 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TemplatesController } from './../src/controllers/GenerationController';
+import { GenerationController } from './../src/controllers/GenerationController';
 import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -19,11 +19,11 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/tenerate',
-            ...(fetchMiddlewares<RequestHandler>(TemplatesController)),
-            ...(fetchMiddlewares<RequestHandler>(TemplatesController.prototype.getWeatherReport)),
+        app.get('/generate',
+            ...(fetchMiddlewares<RequestHandler>(GenerationController)),
+            ...(fetchMiddlewares<RequestHandler>(GenerationController.prototype.getWeatherReport)),
 
-            function TemplatesController_getWeatherReport(request: any, response: any, next: any) {
+            function GenerationController_getWeatherReport(request: any, response: any, next: any) {
             const args = {
             };
 
@@ -33,7 +33,7 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new TemplatesController();
+                const controller = new GenerationController();
 
 
               const promise = controller.getWeatherReport.apply(controller, validatedArgs as any);
