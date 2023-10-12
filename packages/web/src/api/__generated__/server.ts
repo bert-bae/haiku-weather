@@ -19,6 +19,10 @@ import type {
   UseQueryResult,
   QueryKey
 } from '@tanstack/react-query'
+import type {
+  IGetWeatherReportResult,
+  GetWeatherReportParams
+} from './schemas'
 
 
 
@@ -26,32 +30,34 @@ import type {
  * Retrieves the details of an existing template
  */
 export const getWeatherReport = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<unknown>> => {
+    params: GetWeatherReportParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<IGetWeatherReportResult>> => {
     
     return axios.get(
-      `/tenerate`,options
+      `/generate`,{
+    ...options,
+        params: {...params, ...options?.params},}
     );
   }
 
 
-export const getGetWeatherReportQueryKey = () => {
+export const getGetWeatherReportQueryKey = (params: GetWeatherReportParams,) => {
     
-    return [`/tenerate`] as const;
+    return [`/generate`, ...(params ? [params]: [])] as const;
     }
   
 
     
-export const getGetWeatherReportQueryOptions = <TData = Awaited<ReturnType<typeof getWeatherReport>>, TError = AxiosError<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
+export const getGetWeatherReportQueryOptions = <TData = Awaited<ReturnType<typeof getWeatherReport>>, TError = AxiosError<unknown>>(params: GetWeatherReportParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
 ) => {
     
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetWeatherReportQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetWeatherReportQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWeatherReport>>> = ({ signal }) => getWeatherReport({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWeatherReport>>> = ({ signal }) => getWeatherReport(params, { signal, ...axiosOptions });
 
       
     
@@ -64,11 +70,11 @@ export type GetWeatherReportQueryResult = NonNullable<Awaited<ReturnType<typeof 
 export type GetWeatherReportQueryError = AxiosError<unknown>
 
 export const useGetWeatherReport = <TData = Awaited<ReturnType<typeof getWeatherReport>>, TError = AxiosError<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
+ params: GetWeatherReportParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWeatherReport>>, TError, TData>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetWeatherReportQueryOptions(options)
+  const queryOptions = getGetWeatherReportQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

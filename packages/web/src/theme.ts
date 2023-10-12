@@ -32,14 +32,12 @@ export const theme = createTheme({
       main: "#4D6CFA",
     },
     text: {
-      primary: "#25313C",
-      secondary: "#6D7D8B",
-      disabled: "#6c757d",
+      primary: "#fff",
     },
   },
   typography: {
     fontSize: 14,
-    fontFamily: "'Mulish', sans-serif;",
+    fontFamily: "'VT323';",
     h1: {
       fontSize: "48px",
       fontWeight: "bolder",

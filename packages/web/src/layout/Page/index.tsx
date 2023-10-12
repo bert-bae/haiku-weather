@@ -6,22 +6,21 @@ import NavigationBar from "./NavigationBar";
 
 type PageProps = React.FC<{
   children: any;
-  pageTitle?: string;
-  hideAppMenu: boolean;
 }>;
 
 const StyledPage = styled(Box)`
   height: 100%;
   width: 100%;
   position: relative;
+  background-color: black;
 `;
 
-const Page: PageProps = ({ hideAppMenu, children }) => {
+const Page: PageProps = ({ children }) => {
   return (
     <StyledPage>
       <NavigationBar />
       <Box display="flex" height="100%">
-        <PageWrapper hideAppMenu={hideAppMenu}>{children}</PageWrapper>
+        <PageWrapper>{children}</PageWrapper>
       </Box>
     </StyledPage>
   );

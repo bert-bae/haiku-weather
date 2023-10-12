@@ -3,7 +3,7 @@ import { Box, Container } from "@mui/material";
 import { styled } from "@mui/system";
 import { LAYOUT_SIZES } from "theme";
 
-type PageWrapperProps = React.FC<{ children: any; hideAppMenu: boolean }>;
+type PageWrapperProps = React.FC<{ children: any }>;
 
 const MainContainer = styled(Container)`
   height: fit-content;
@@ -20,9 +20,8 @@ const PageWrapper: PageWrapperProps = (props) => {
     <Box
       flex={1}
       sx={{
-        backgroundColor: "#fffafa",
         height: "100%",
-        paddingLeft: props.hideAppMenu ? 0 : LAYOUT_SIZES.appSideMenu.width,
+        paddingLeft: 0,
       }}
     >
       <MainContainer maxWidth={false}>{props.children}</MainContainer>

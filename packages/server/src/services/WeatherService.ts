@@ -100,7 +100,6 @@ export class WeatherService {
     const weather = await this.client.get<IWeatherReport>(
       `/weather?lat=${lat}&lon=${lon}`
     );
-    console.log(weather.data);
     return {
       raw: weather.data,
       summary: this.summarizeWeather(weather.data),
