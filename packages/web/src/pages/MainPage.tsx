@@ -1,18 +1,19 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Skeleton, Typography } from "@mui/material";
+import { Box, Skeleton, Typography, useMediaQuery } from "@mui/material";
 import { useGetWeatherReport } from "api/__generated__/server";
 import Page from "layout/Page";
 
 const StyledImg = styled.img`
   height: ${({ theme }) => theme.spacing(60)};
-  width: ${({ theme }) => theme.spacing(60)};
+  max-width: ${({ theme }) => theme.spacing(60)};
   box-shadow: ${({ theme }) => theme.shadows[4]};
   border-radius: 12px;
 `;
 
 const MainPage = () => {
   const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { data, isLoading } = useGetWeatherReport(
     {
       lat: "49.282730",
@@ -27,7 +28,8 @@ const MainPage = () => {
         display="flex"
         alignItems="center"
         justifyContent="space-around"
-        sx={{ pt: 12, pb: 12 }}
+        flexDirection={mobile ? "column" : "row"}
+        sx={{ mt: 12, mb: 12 }}
       >
         {isLoading && (
           <>
@@ -37,6 +39,7 @@ const MainPage = () => {
                 height: theme.spacing(60),
                 width: theme.spacing(60),
                 borderRadius: "12px",
+                mb: mobile ? 6 : 0,
               }}
             />
             <Box display="flex" flexDirection="column" alignItems="center">
@@ -48,7 +51,11 @@ const MainPage = () => {
         )}
         {!isLoading && (
           <>
-            <StyledImg src={data?.data.imageUrl} alt="Generated image" />
+            <StyledImg
+              src={data?.data.imageUrl}
+              alt="Generated image"
+              style={{ marginBottom: mobile ? theme.spacing(6) : 0 }}
+            />
             <Typography
               variant="h3"
               sx={{ whiteSpace: "pre-wrap", textAlign: "center" }}
