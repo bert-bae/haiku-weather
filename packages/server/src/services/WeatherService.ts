@@ -74,6 +74,11 @@ interface IWeatherSummary {
   snow: "None" | "Light" | "Moderate" | "Heavy" | "Very heavy";
 }
 
+export interface IGetWeatherResult {
+  raw: IWeatherReport;
+  summary: IWeatherSummary;
+}
+
 export class WeatherService {
   private client: AxiosInstance;
   constructor() {
@@ -88,10 +93,10 @@ export class WeatherService {
     });
   }
 
-  public async getWeather({ lat, lon }: IGetWeatherInput): Promise<{
-    raw: IWeatherReport;
-    summary: IWeatherSummary;
-  }> {
+  public async getWeather({
+    lat,
+    lon,
+  }: IGetWeatherInput): Promise<IGetWeatherResult> {
     const weather = await this.client.get<IWeatherReport>(
       `/weather?lat=${lat}&lon=${lon}`
     );

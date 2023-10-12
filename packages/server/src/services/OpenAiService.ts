@@ -18,7 +18,11 @@ export class OpenAiService {
   }
 
   public async getImage(prompt: string): Promise<ImagesResponse> {
-    const image = await this.client.images.generate({ prompt, n: 1 });
+    const image = await this.client.images.generate({
+      prompt,
+      n: 1,
+      size: "512x512",
+    });
     return image;
   }
 }

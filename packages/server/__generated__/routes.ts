@@ -9,6 +9,62 @@ import type { RequestHandler, Router } from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "IWeatherReport": {
+        "dataType": "refObject",
+        "properties": {
+            "coord": {"dataType":"nestedObjectLiteral","nestedProperties":{"lat":{"dataType":"double","required":true},"lon":{"dataType":"double","required":true}},"required":true},
+            "weather": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"icon":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"main":{"dataType":"string","required":true},"id":{"dataType":"double","required":true}}},"required":true},
+            "base": {"dataType":"string","required":true},
+            "main": {"dataType":"nestedObjectLiteral","nestedProperties":{"humidity":{"dataType":"double","required":true},"pressure":{"dataType":"double","required":true},"temp_max":{"dataType":"double","required":true},"temp_min":{"dataType":"double","required":true},"feels_like":{"dataType":"double","required":true},"temp":{"dataType":"double","required":true}},"required":true},
+            "visibility": {"dataType":"double","required":true},
+            "wind": {"dataType":"nestedObjectLiteral","nestedProperties":{"gust":{"dataType":"double","required":true},"deg":{"dataType":"double","required":true},"speed":{"dataType":"double","required":true}},"required":true},
+            "clouds": {"dataType":"nestedObjectLiteral","nestedProperties":{"all":{"dataType":"double","required":true}},"required":true},
+            "dt": {"dataType":"double","required":true},
+            "sys": {"dataType":"nestedObjectLiteral","nestedProperties":{"sunset":{"dataType":"double","required":true},"sunrise":{"dataType":"double","required":true},"country":{"dataType":"string","required":true},"id":{"dataType":"double","required":true},"type":{"dataType":"double","required":true}},"required":true},
+            "timezone": {"dataType":"double","required":true},
+            "id": {"dataType":"double","required":true},
+            "name": {"dataType":"string","required":true},
+            "cod": {"dataType":"double","required":true},
+            "rain": {"dataType":"nestedObjectLiteral","nestedProperties":{"3h":{"dataType":"double"},"1h":{"dataType":"double"}},"required":true},
+            "snow": {"dataType":"nestedObjectLiteral","nestedProperties":{"3h":{"dataType":"double"},"1h":{"dataType":"double"}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWeatherSummary": {
+        "dataType": "refObject",
+        "properties": {
+            "temperature": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Freezing"]},{"dataType":"enum","enums":["Cold"]},{"dataType":"enum","enums":["Chilly"]},{"dataType":"enum","enums":["Warm"]},{"dataType":"enum","enums":["Hot"]},{"dataType":"enum","enums":["Very hot"]}],"required":true},
+            "humidity": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Dry"]},{"dataType":"enum","enums":["Humid"]},{"dataType":"enum","enums":["Very humid"]}],"required":true},
+            "weather": {"dataType":"string","required":true},
+            "visibility": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Clear"]},{"dataType":"enum","enums":["Fog"]},{"dataType":"enum","enums":["Misty"]},{"dataType":"enum","enums":["Haze"]}],"required":true},
+            "wind": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Calm"]},{"dataType":"enum","enums":["Light breeze"]},{"dataType":"enum","enums":["Moderate breeze"]},{"dataType":"enum","enums":["Strong breeze"]},{"dataType":"enum","enums":["Fresh gale"]},{"dataType":"enum","enums":["Strong gale"]},{"dataType":"enum","enums":["Whole gale"]},{"dataType":"enum","enums":["Storm"]},{"dataType":"enum","enums":["Hurricane"]}],"required":true},
+            "cloud": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Clear"]},{"dataType":"enum","enums":["Some clouds"]},{"dataType":"enum","enums":["Cloudy"]}],"required":true},
+            "rain": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["None"]},{"dataType":"enum","enums":["Light"]},{"dataType":"enum","enums":["Moderate"]},{"dataType":"enum","enums":["Heavy"]},{"dataType":"enum","enums":["Very heavy"]}],"required":true},
+            "snow": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["None"]},{"dataType":"enum","enums":["Light"]},{"dataType":"enum","enums":["Moderate"]},{"dataType":"enum","enums":["Heavy"]},{"dataType":"enum","enums":["Very heavy"]}],"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IGetWeatherResult": {
+        "dataType": "refObject",
+        "properties": {
+            "raw": {"ref":"IWeatherReport","required":true},
+            "summary": {"ref":"IWeatherSummary","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IGetWeatherReportResult": {
+        "dataType": "refObject",
+        "properties": {
+            "weather": {"ref":"IGetWeatherResult","required":true},
+            "imageUrl": {"dataType":"string","required":true},
+            "poem": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -25,6 +81,8 @@ export function RegisterRoutes(app: Router) {
 
             function GenerationController_getWeatherReport(request: any, response: any, next: any) {
             const args = {
+                    lat: {"in":"query","name":"lat","required":true,"dataType":"string"},
+                    lon: {"in":"query","name":"lon","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
