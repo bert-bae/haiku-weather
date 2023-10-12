@@ -1,19 +1,13 @@
 import { Typography, Link } from "@mui/material";
 
-const Copyright = (props: any) => {
+const Copyright = () => {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography variant="body2" align="center">
       {"Copyright © "}
       <Link color="inherit" href="/">
         Bertcode
       </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      {new Date().getFullYear()}.
     </Typography>
   );
 };

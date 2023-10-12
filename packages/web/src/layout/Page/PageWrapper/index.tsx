@@ -10,7 +10,6 @@ const MainContainer = styled(Container)`
   min-height: 100%;
   width: 100%;
   padding-top: ${LAYOUT_SIZES.navigationBar.height};
-  padding-bottom: ${({ theme }) => theme.spacing(3)};
   box-sizing: border-box;
   margin-left: 0;
 `;
