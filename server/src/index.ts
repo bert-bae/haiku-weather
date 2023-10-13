@@ -3,7 +3,7 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import { RegisterRoutes } from "../__generated__/routes";
 import { ValidateError } from "tsoa";
-import { CustomError } from "@haikuweather/common";
+
 require("dotenv").config();
 
 const app = express();
@@ -33,10 +33,6 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
       message: "Validation Failed",
       details: err?.fields,
     });
-  }
-
-  if (err instanceof CustomError) {
-    return res.status(err.code).json({ message: err.message });
   }
 
   if (err instanceof Error) {
