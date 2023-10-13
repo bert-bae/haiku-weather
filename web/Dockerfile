@@ -6,7 +6,7 @@ LABEL maintainer = ["bae.webdev@gmail.com"]
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package*.json ./
 
 RUN npm ci
 
