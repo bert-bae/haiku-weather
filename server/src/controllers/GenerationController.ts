@@ -36,14 +36,14 @@ export class GenerationController extends Controller {
     });
 
     const prompt = this.generateWeatherHaikuPrompt(weather.summary);
-    const response = await this.openAi.getPrompt(prompt);
-    const poem = response.choices[0].message;
-    const image = await this.openAi.getImage(
-      this.generateWeatherImagePrompt(prompt)
-    );
+    const [chatRes, imageRes] = await Promise.all([
+      this.openAi.getPrompt(prompt),
+      this.openAi.getImage(this.generateWeatherImagePrompt(prompt)),
+    ]);
+    const poem = chatRes.choices[0].message;
     return {
       weather,
-      imageUrl: image.data.find((img) => img.url)?.url || "",
+      imageUrl: imageRes.data.find((img) => img.url)?.url || "",
       poem: poem.content || "",
     };
   }
