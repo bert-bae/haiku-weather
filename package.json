@@ -2,7 +2,9 @@
   "name": "@haikuweather",
   "scripts": {
     "setup": "npm i --workspaces",
-    "rebuild": "npm run compile --workspaces --if-present"
+    "rebuild": "npm run compile --workspaces --if-present",
+    "dev:server": "npm run dev -w packages/server",
+    "dev:web": "npm run dev -w packages/web"
   },
   "workspaces": [
     "packages/*"
