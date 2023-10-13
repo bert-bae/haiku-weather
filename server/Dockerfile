@@ -1,7 +1,7 @@
 FROM node:18.18.0
 
 LABEL version="1.0"
-LABEL description="Frontend app for haiku weather"
+LABEL description="Backend app for haiku weather"
 LABEL maintainer = ["bae.webdev@gmail.com"]
 
 WORKDIR /app
@@ -12,9 +12,8 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build
+RUN npm run compile
 
-EXPOSE 3000
+EXPOSE 5000
 
-RUN npm install -g serve
-CMD ["serve", "-s", "build"]
+CMD ["node", "./lib/src/index.js"]
