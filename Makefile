@@ -1,4 +1,7 @@
 dockerweb:
 	cd web && docker build ./
 
-build: dockerweb
+dockerserver:
+	cd web && docker build ./
+
+build: dockerweb dockerserver
