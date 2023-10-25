@@ -6,24 +6,26 @@ import { useEffect, useState } from "react";
 import PageSkeleton from "./PageSkeleton";
 import PageContent from "./PageContent";
 
-function getLocationErrors(error) {
+function getLocationErrors(error: { code: string }) {
   switch (error.code) {
-    case error.PERMISSION_DENIED:
+    case "PERMISSION_DENIED":
       return "User denied the request for Geolocation.";
 
-    case error.POSITION_UNAVAILABLE:
+    case "POSITION_UNAVAILABLE":
       return "Location information is unavailable.";
 
-    case error.TIMEOUT:
+    case "TIMEOUT":
       return "The request to get user location timed out.";
 
-    case error.UNKNOWN_ERROR:
+    case "UNKNOWN_ERROR":
       return "An unknown error occurred.";
   }
 }
 
 const MainPage = () => {
-  const [location, setLocation] = useState<{ lat: number; lon: number }>(null);
+  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
+    null
+  );
   const [locationError, setLocationError] = useState<string>("");
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -52,8 +54,8 @@ const MainPage = () => {
         setLocationError("");
       },
       (e) => {
-        const errMessage = getLocationErrors(e);
-        setLocationError(errMessage);
+        const errMessage = getLocationErrors(e as any);
+        setLocationError(errMessage as string);
       }
     );
   }, []);
